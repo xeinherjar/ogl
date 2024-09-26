@@ -1,7 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
 
 # ===== win32 =====
-
 WIN32_DEFINES = [
     "_GLFW_WIN32",
 ]
@@ -29,14 +28,12 @@ WIN32_LINKOPTS = [
 ]
 
 # ===== linux =====
-
 LINUX_DEFINES = [
     "_GLFW_HAS_XF86VM",
     "_GLFW_X11",
 ]
 
 LINUX_HDRS = [
-    "src/glx_context.h",
     "src/linux_joystick.h",
     "src/posix_thread.h",
     "src/posix_time.h",
@@ -56,23 +53,18 @@ LINUX_SRCS = [
 LINUX_LINKOPTS = []
 
 # ===== darwin =====
-
 DARWIN_DEFINES = [
     "_GLFW_COCOA",
     "_GLFW_NSGL",
-    "_GLFW_NO_DLOAD_WINMM",
-    "_GLFW_USE_OPENGL",
 ]
 
 DARWIN_HDRS = [
     "src/cocoa_joystick.h",
     "src/cocoa_platform.h",
-    "src/glx_context.h",
-    "src/nsgl_context.h",
+    "src/cocoa_time.h",
     "src/null_joystick.h",
     "src/null_platform.h",
     "src/posix_thread.h",
-    "src/wl_platform.h",
 ]
 
 DARWIN_SRCS = [
@@ -86,31 +78,37 @@ DARWIN_SRCS = [
 ]
 
 DARWIN_LINKOPTS = [
-    "GLFW",
-    "-framework OpenGL",
     "-framework Cocoa",
+    "-framework OpenGL",
     "-framework IOKit",
     "-framework CoreFoundation",
+    "-framework Metal",
 ]
 
 # ===== common =====
-
 COMMON_HDRS = [
     "include/GLFW/glfw3.h",
     "include/GLFW/glfw3native.h",
-    "src/egl_context.h",
     "src/internal.h",
-    "src/osmesa_context.h",
     "src/mappings.h",
     "src/xkb_unicode.h",
+    "src/platform.h",
 ]
 
 COMMON_SRCS = [
     "src/context.c",
     "src/egl_context.c",
+    "src/platform.c",
     "src/init.c",
+    "src/null_init.c",
+    "src/null_monitor.c",
+    # Doesn't exist in this version?
+    # "src/null_platform.c",
+    "src/null_window.c",
+    "src/null_joystick.c",
     "src/input.c",
     "src/osmesa_context.c",
+    "src/posix_module.c",
     "src/monitor.c",
     "src/vulkan.c",
     "src/window.c",
@@ -139,6 +137,7 @@ objc_library(
     hdrs = COMMON_HDRS + DARWIN_HDRS,
     copts = ["-fno-objc-arc"],
     defines = DARWIN_DEFINES,
+    linkopts = DARWIN_LINKOPTS + ["-framework QuartzCore"],
 )
 
 cc_library(
@@ -160,4 +159,3 @@ cc_library(
         "@bazel_tools//src/conditions:darwin": [":glfw_src_darwin"],
     }),
 )
-

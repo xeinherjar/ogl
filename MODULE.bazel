@@ -4,5 +4,23 @@
 #
 # For more details, please check https://github.com/bazelbuild/bazel/issues/18958
 ###############################################################################
+module(
+    name = "ogl",
+    version = "1.0.0",
+)
 
+bazel_dep(name = "rules_apple", version = "3.9.2")
 bazel_dep(name = "apple_support", version = "1.17.0", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "rules_cc", version = "0.0.10")
+
+# C++ Intellisense
+
+# Run `bazel run //:hedron_compile_commands` to generate compile_commands.json for clangd
+bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
+git_override(
+    module_name = "hedron_compile_commands",
+    remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
+    commit = "1e08f8e0507b6b6b1f4416a9a22cf5c28beaba93",
+    # Replace the commit hash (above) with the latest (https://github.com/hedronvision/bazel-compile-commands-extractor/commits/main).
+    # Even better, set up Renovate and let it do the work for you (see "Suggestion: Updates" in the README).
+)

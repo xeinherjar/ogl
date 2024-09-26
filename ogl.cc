@@ -13,5 +13,5 @@ int main(int argc, char **argv) {
   glfwDestroyWindow(window);
   glfwTerminate();
 
-  return EXIT_SUCCESS;
+  return 0;
 }
