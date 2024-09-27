@@ -15,5 +15,6 @@ cc_binary(
         ],
     deps = [
         "@glfw",
+        "@glad",
     ],
 )

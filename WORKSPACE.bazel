@@ -1,8 +1,15 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
+load("@bazel_tools//tools/build_defs/repo:local.bzl", "new_local_repository")
 
 new_git_repository(
     name = "glfw",
     build_file = "@//:third_party/BUILD.glfw.bazel",
     commit = "b35641f4a3c62aa86a0b3c983d163bc0fe36026d",
     remote = "https://github.com/glfw/glfw.git",
+)
+
+new_local_repository(
+    name = "glad",
+    path = "./third_party/glad",
+    build_file = "@//:third_party/BUILD.glad.bazel",
 )

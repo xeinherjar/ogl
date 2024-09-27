@@ -1,0 +1,26 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+objc_library(
+    name = "glad_src_darwin",
+    hdrs = [
+      "include/KHR/khrplatform.h",
+      "include/glad/glad.h",
+    ],
+    srcs = ["src/glad.c"],
+)
+
+cc_library(
+    name = "glad",
+    strip_include_prefix = "include",
+    visibility = ["//visibility:public"],
+    deps = [":glad_src_darwin"],
+    hdrs = [
+      "include/KHR/khrplatform.h",
+      "include/glad/glad.h",
+    ],
+    # deps = select({
+    #    "@bazel_tools//src/conditions:windows": [":glad_src"],
+    #    "@bazel_tools//src/conditions:linux_x86_64": [":glad_src"],
+    #     "@bazel_tools//src/conditions:darwin": [":glad_src_darwin"],
+    ##  }),
+)
