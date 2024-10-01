@@ -2,6 +2,18 @@ load("@hedron_compile_commands//:refresh_compile_commands.bzl", "refresh_compile
 
 refresh_compile_commands(name = "refresh_compile_commands")
 
+cc_library(
+    name = "logl_headers",
+    hdrs = [
+        "shader.h",
+    ],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@glad"
+    ]
+)
+
 cc_binary(
     name = "ogl",
     srcs = ["ogl.cc"],
@@ -16,5 +28,22 @@ cc_binary(
     deps = [
         "@glfw",
         "@glad",
+    ],
+)
+cc_binary(
+    name = "hello_shaders",
+    srcs = ["hello_shaders.cc"],
+    linkopts =
+        [
+            "-framework Cocoa",
+            "-framework OpenGL",
+            "-framework IOKit",
+            "-framework CoreFoundation",
+            "-framework Metal",
+        ],
+    deps = [
+        "@glfw",
+        "@glad",
+        ":logl_headers"
     ],
 )
